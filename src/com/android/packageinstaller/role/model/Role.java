@@ -254,6 +254,17 @@ public class Role {
     }
 
     /**
+     * Callback when this role is added to the system for the first time.
+     *
+     * @param context the {@code Context} to retrieve system services
+     */
+    public void onRoleAdded(@NonNull Context context) {
+        if (mBehavior != null) {
+            mBehavior.onRoleAdded(this, context);
+        }
+    }
+
+    /**
      * Check whether this role is available.
      *
      * @param user the user to check for
@@ -366,6 +377,23 @@ public class Role {
         if (mBehavior != null) {
             mBehavior.preparePreferenceAsUser(this, preference, user, context);
         }
+    }
+
+    /**
+     * Check whether a qualifying application should be visible to user.
+     *
+     * @param applicationInfo the {@link ApplicationInfo} for the application
+     * @param user the user for the application
+     * @param context the {@code Context} to retrieve system services
+     *
+     * @return whether the qualifying application should be visible to user
+     */
+    public boolean isApplicationVisibleAsUser(@NonNull ApplicationInfo applicationInfo,
+            @NonNull UserHandle user, @NonNull Context context) {
+        if (mBehavior != null) {
+            return mBehavior.isApplicationVisibleAsUser(this, applicationInfo, user, context);
+        }
+        return true;
     }
 
     /**
